@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>五子棋双人对战</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<style type="text/css">
+	*{margin: 0;padding: 0;}
+	#chessboard{display: block;background-color:grey;margin:0 auto;}
+	#btn{text-align: center;}
+	#reload1,#back,#menu{width: 90px;height: 40px;text-align: center;line-height:40px;background-color: #D1EEEE;display: inline-block;margin: 30px auto;color: black;cursor: pointer;}
+	</style>
+</head>
+<body>
+	<canvas id="chessboard" height="450px" width="360px"></canvas>
+	<div id="btn">
+		<div id="reload1">重新开始</div>
+		<a href="../index.html"><div id="menu">主选单</div></a>
+		<div id="back">悔棋</div>
+	</div>
+
+	<script type="text/javascript">
+	
+	//重新启动
+	function reload(){
+		window.location.reload();										
+	}
+	var btn1=document.getElementById('reload1');
+	btn1.onclick=reload;
+	
+	//悔棋功能
+	function back(){
+		if (chessman[backX][backY]!=0) {
+			context.clearRect((backX)*30,(backY)*30,30,30)		//消除棋子(X坐标,Y坐标,宽度,高度)
+			o=!o;
+			chessman[backX][backY]=0;
+
+			context.beginPath();
+			context.moveTo(15+backX*30,backY*30);
+			context.lineTo(15+backX*30,backY*30+30);
+
+			context.moveTo(backX*30,backY*30+15);
+			context.lineTo((backX+1)*30,backY*30+15);
+			context.stroke();
+		}
+		
+	}
+	var back1=document.getElementById('back');
+	back1.onclick=back;
+	
+	//画棋盘
+	var context =chessboard.getContext('2d');
+	function drawChessBoard(){											
+		var chessboard=document.getElementById('chessboard');
+		context.strokeStyle="#F8F8FF";
+		for(var i=0;i<12;i++){
+			context.moveTo(15+i*30,15);		//画12条竖线
+			context.lineTo(15+i*30,435);
+			context.stroke();
+		}
+		for(var i=0;i<15;i++){
+			context.moveTo(15,15+i*30);		//画15条横线
+			context.lineTo(345,15+i*30);
+			context.stroke();
+		}
+	}
+	drawChessBoard();
+	
+	//画棋子
+	function drawchessman(a,b,c){
+		context.beginPath();
+		context.closePath();
+		context.arc(15+a*30,15+b*30,13,0,2*Math.PI);				//坐标1,坐标2,半径,起始点,终止点
+		if (c) {
+			context.fillStyle="black";			
+			context.fill();
+		}else{
+			context.fillStyle="white";
+			context.fill();
+		}
+	}												
+	
+	//下棋
+	var o=true;
+	var chessman=[];
+	var backX=0,backY=0;
+	for(var i=0;i<12;i++){											//定义一个二维数组用来保存棋盘上棋子的坐标		
+		chessman[i]=[];
+		for(var j=0;j<15;j++){
+			chessman[i][j]=0;
+		}
+	}
+	function play(ev){
+		var ev=ev||event;
+		var x=ev.offsetX;											//相对于当前发生事件源的X坐标
+		var y=ev.offsetY;											//相对于当前发生事件源的Y坐标
+		var m=Math.floor(x/30);
+		var n=Math.floor(y/30); 
+		backX=m;
+		backY=n;
+		if (chessman[m][n]==0) {
+			drawchessman(m,n,o)
+			if (o==true) {												//如果落子为黑棋,对应数组为1
+				chessman[m][n]=1;
+			}else{
+				chessman[m][n]=2;										//如果落子为白棋,对应数组为2
+			}
+			o=!o;
+		}
+			
+			//赢得游戏的所有排列
+			function wins(){											
+				
+				//竖线赢法
+				for(var i=0;i<12;i++){
+					for(var j=0;j<11;j++){
+						if (chessman[i][j]==1&&chessman[i][j+1]==1&&chessman[i][j+2]==1&&chessman[i][j+3]==1&&chessman[i][j+4]==1) {
+								setTimeout(function(){
+									alert("玩家1胜利");
+								},100)
+								chessboard.onclick='';
+								return;
+						}else if (chessman[i][j]==2&&chessman[i][j+1]==2&&chessman[i][j+2]==2&&chessman[i][j+3]==2&&chessman[i][j+4]==2) {
+								setTimeout(function(){
+									alert("玩家2胜利");
+								},100)
+								chessboard.onclick='';
+								return;
+						}
+					}
+				}
+				
+				//横线赢法
+				for(var i=0;i<8;i++){
+					for(var j=0;j<15;j++){
+						if (chessman[i][j]==1&&chessman[i+1][j]==1&&chessman[i+2][j]==1&&chessman[i+3][j]==1&&chessman[i+4][j]==1) {
+								setTimeout(function(){
+									alert("玩家1胜利");
+								},100)
+								chessboard.onclick='';
+								return;
+						}else if (chessman[i][j]==2&&chessman[i+1][j]==2&&chessman[i+2][j]==2&&chessman[i+3][j]==2&&chessman[i+4][j]==2) {
+								setTimeout(function(){
+									alert("玩家2胜利");
+								},100)
+								chessboard.onclick='';
+								return;
+						}
+					}
+				}
+
+				//斜线赢法
+				for(var i=0;i<8;i++){
+					for(var j=4;j<15;j++){
+						if (chessman[i][j]==1&&chessman[i+1][j-1]==1&&chessman[i+2][j-2]==1&&chessman[i+3][j-3]==1&&chessman[i+4][j-4]==1) {
+								setTimeout(function(){
+									alert("玩家1胜利");
+								},100)
+								chessboard.onclick='';
+								return;
+						}else if (chessman[i][j]==2&&chessman[i+1][j-1]==2&&chessman[i+2][j-2]==2&&chessman[i+3][j-3]==2&&chessman[i+4][j-4]==2) {
+								setTimeout(function(){
+									alert("玩家2胜利");
+								},100)
+								chessboard.onclick='';
+								return;
+						}
+					}
+				}
+
+				//反斜线赢法
+				for(var i=0;i<8;i++){
+					for(var j=0;j<11;j++){
+						if (chessman[i][j]==1&&chessman[i+1][j+1]==1&&chessman[i+2][j+2]==1&&chessman[i+3][j+3]==1&&chessman[i+4][j+4]==1) {
+								setTimeout(function(){
+									alert("玩家1胜利");
+								},100)
+								chessboard.onclick='';
+								return;
+						}else if (chessman[i][j]==2&&chessman[i+1][j+1]==2&&chessman[i+2][j+2]==2&&chessman[i+3][j+3]==2&&chessman[i+4][j+4]==2) {
+								setTimeout(function(){
+									alert("玩家2胜利");
+								},100)
+								chessboard.onclick='';
+								return;
+						}
+					}
+				}
+			}
+			wins()		
+	}
+	chessboard.onclick=play;
+	</script>
+</body>
+</html>

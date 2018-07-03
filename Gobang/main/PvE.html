@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>五子棋人机对战</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<style type="text/css">
+	*{margin: 0;padding: 0;}
+	#chessboard{display: block;background-color:grey;margin:0px auto;}
+	#btn{text-align: center;}
+	#reload1,#back,#menu{width: 90px;height: 40px;text-align: center;line-height:40px;background-color: #D1EEEE;display: inline-block;margin: 30px auto;color: black;cursor: pointer;}
+	</style>
+</head>
+<body>
+	<canvas id="chessboard" height="450px" width="360px"></canvas>
+	<div id="btn">
+		<div id="reload1">重新开始</div>
+		<a href="../index.html"><div id="menu">主选单</div></a>
+		<div id="back">悔棋</div>
+	</div>
+
+	<script type="text/javascript">
+
+
+	//重新启动按钮
+	function reload(){
+		window.location.reload();
+	}
+	var btn1=document.getElementById('reload1');
+	btn1.onclick=reload;
+
+
+	//悔棋功能
+	var backX=0,backY=0;
+	var aibackX=0,aibackY=0;
+	var mywinback=[];
+	var aiwinback=[];
+	var z=[],p=[];
+	function back(){
+		if (chessman[backX][backY]!=0) {
+			for(var i=0;i<z.length;i++){
+				if (mywin[z[i]]>=5) {
+					mywin[z[i]]=mywinback[z[i]];
+				}else{
+					mywin[z[i]]--;
+				}
+
+				if (aiwin[z[i]]>=5) {
+					aiwin[z[i]]=aiwinback[z[i]];
+				}else{
+					aiwin[z[i]]--;
+				}
+			}
+
+			for(var i=0;i<p.length;i++){
+				if (mywin[p[i]]>=5) {
+					mywin[p[i]]=mywinback[p[i]];
+				}else{
+					mywin[p[i]]--;
+				}
+				
+				if (aiwin[p[i]]>=5) {
+					aiwin[p[i]]=aiwinback[p[i]];
+				}else{
+					aiwin[p[i]]--;
+				}
+			}
+			
+
+			context.clearRect((backX)*30,(backY)*30,30,30)           //消除玩家棋子(X坐标,Y坐标,宽度,高度)
+			chessman[backX][backY]=0;
+
+			context.clearRect((aibackX)*30,(aibackY)*30,30,30)        //消除电脑棋子(X坐标,Y坐标,宽度,高度)
+			chessman[aibackX][aibackY]=0;
+
+			context.beginPath();
+			context.moveTo(15+backX*30,backY*30);
+			context.lineTo(15+backX*30,backY*30+30);
+			context.moveTo(backX*30,backY*30+15);
+			context.lineTo((backX+1)*30,backY*30+15);
+
+			context.moveTo(15+aibackX*30,aibackY*30);
+			context.lineTo(15+aibackX*30,aibackY*30+30);
+			context.moveTo(aibackX*30,aibackY*30+15);
+			context.lineTo((aibackX+1)*30,aibackY*30+15);
+			context.stroke();
+		}
+	}
+	var back1=document.getElementById('back');
+	back1.onclick=back;
+	
+
+	//画棋盘								
+	var chessboard=document.getElementById('chessboard');
+	var context =chessboard.getContext('2d');
+	function drawChessBoard(){                              
+		context.strokeStyle="#F8F8FF";
+		for(var i=0;i<12;i++){
+			context.moveTo(15+i*30,15);     //画12条竖线
+			context.lineTo(15+i*30,435);
+			context.stroke();
+		}
+		for(var i=0;i<15;i++){
+			context.moveTo(15,15+i*30);     //画15条横线
+			context.lineTo(345,15+i*30);
+			context.stroke();
+		}
+	}
+	drawChessBoard();
+	
+
+	//画棋子
+	function drawchessman(a,b,c){
+		context.beginPath();
+		context.closePath();
+		context.arc(15+a*30,15+b*30,13,0,2*Math.PI);	//坐标1,坐标2,半径,起始点,终止点
+		if (c) {
+			context.fillStyle="black";
+			context.fill();
+		}else{
+			setTimeout(function(){
+				context.fillStyle="white";
+				context.fill();
+			},300)
+		}
+	}
+
+
+	//赢得游戏的所有排列方法
+	var count=0;
+	var win=[];													//创建一个三维数组,用来保存每种赢法的具体坐标位置
+	for(var i=0;i<12;i++){
+		win[i]=[]
+		for(var j=0;j<15;j++){
+			win[i][j]=[];
+		}
+	}
+	function wins(){
+		
+		//竖线赢法
+		for (var i = 0; i < 12; i++) { 
+			for (var j = 0; j < 11; j ++) {
+				for (var k = 0; k < 5; k ++) {
+					win[i][j+k][count] = true;
+				}
+				count++;
+			}
+		}
+
+		//横线赢法
+		for (var i = 0; i < 8; i++) { 
+			for (var j = 0; j < 15; j ++) {
+				for (var k = 0; k < 5; k ++) {
+					win[i+k][j][count] = true;
+				}
+				count++;
+			}
+		}
+
+		//斜线赢法
+		for (var i = 0; i < 8; i++) {
+			for (var j = 4; j < 15; j ++) {
+				for (var k = 0; k < 5; k ++) {
+					win[i+k][j-k][count] = true;
+				}
+				count++;
+			}
+		}
+
+		//反斜线赢法
+		for (var i =0; i < 8; i++) {
+			for (var j = 0; j < 11; j ++) {
+				for (var k = 0; k < 5; k ++) {
+					win[i+k][j+k][count] = true;
+				}
+				count++;
+			}
+		}
+	}
+	wins();
+
+
+	//创建两个一维数组用来保存我和计算机实现任意一种赢法的放下棋子的个数
+	var mywin=[];
+	var aiwin=[];
+	for(var i=0;i<count;i++){
+		mywin[i]=0;
+		aiwin[i]=0;
+		mywinback[i]=0;
+		aiwinback[i]=0;
+	}
+
+
+	//定义一个二维数组用来保存棋盘上棋子的坐标
+	var chessman=[];
+	for(var i=0;i<12;i++){
+		chessman[i]=[];
+		for(var j=0;j<15;j++){
+			chessman[i][j]=0;
+		}
+	}
+
+
+	//玩家下棋
+	var o=true;
+	function play(ev){
+		var ev=ev||event;											//为了兼容火狐浏览器使用event事件
+		var x=ev.offsetX;                                           //相对于当前发生事件源的X坐标
+		var y=ev.offsetY;                                           //相对于当前发生事件源的Y坐标
+		var m=Math.floor(x/30);
+		var n=Math.floor(y/30); 
+		backX=m;
+		backY=n;
+		z=[];
+		if (chessman[m][n]==0&&o==true) {
+			drawchessman(m,n,o)
+			chessman[m][n]=1;										//如果落子为黑棋,对应数组为1
+			for(var i=0;i<count;i++){
+				if (win[m][n][i]==true) {
+					mywinback[i]=mywin[i];
+					aiwinback[i]=aiwin[i];
+					z.push(i);
+					mywin[i]++;
+					aiwin[i]=6;
+					
+					if (mywin[i]==5) {
+						setTimeout(function(){
+							alert("玩家胜利")
+						},100)
+						chessboard.onclick='';
+						back1.onclick='';
+						return;
+					}
+				}
+			}
+			o=!o;
+			if (o==false) {
+				aiplay();
+			}
+		}
+	}
+	chessboard.onclick=play;
+	
+
+
+	//电脑下棋
+	function aiplay(){
+		var myscore=[];
+		var aiscore=[];
+		var max=0;
+		var x=0,y=0;
+		p=[];
+		for(var i=0;i<12;i++){
+			myscore[i]=[];
+			aiscore[i]=[];
+			for(var j=0;j<15;j++){
+				myscore[i][j]=0;
+				aiscore[i][j]=0;
+			}
+		}
+		for(var i=0;i<12;i++){
+			for(var j=0;j<15;j++){
+				if(chessman[i][j]==0){
+					for(var k=0;k<count;k++){
+						if(win[i][j][k]){
+							if(mywin[k]==1){
+								myscore[i][j]+=200;
+							}else if(mywin[k]==2){
+								myscore[i][j]+=400;
+							}else if(mywin[k]==3){
+								myscore[i][j]+=2000;
+							}else if(mywin[k]==4){
+								myscore[i][j]+=10000;
+							}
+							
+							if(aiwin[k]==1){
+								aiscore[i][j]+=220;
+							}else if(aiwin[k]==2){
+								aiscore[i][j]+=420;
+							}else if(aiwin[k]==3){
+								aiscore[i][j]+=2100;
+							}else if(aiwin[k]==4){
+								aiscore[i][j]+=20000;
+							}
+						}
+					}
+					
+					if(myscore[i][j]>max){
+						max=myscore[i][j];
+						x=i;
+						y=j;
+					}else if(myscore[i][j]==max){
+						if(aiscore[i][j]>aiscore[x][y]){
+							x=i;
+							y=j;
+						}
+					}
+					
+					if(aiscore[i][j]>max){
+						max=aiscore[i][j];
+						x=i;
+						y=j;
+					}else if(aiscore[i][j]==max){
+						if(myscore[i][j]>myscore[x][y]){
+							x=i;
+							y=j;    
+						}
+					}
+					
+				}
+			}
+		}
+		if (chessman[x][y]==0&&o==false) {
+			drawchessman(x,y,o);
+			chessman[x][y]=2;  												//计算机占据位置定为2
+			aibackX=x;
+			aibackY=y;
+			for(var k=0;k<count;k++){
+				if(win[x][y][k]==true){
+					aiwinback[k]=aiwin[k];
+					mywinback[k]=mywin[k];
+					p.push(k);
+					aiwin[k]++;
+					mywin[k]=6;												//这个位置对方不可能赢了
+
+					if(aiwin[k]==5){
+						setTimeout(function(){
+							alert("电脑胜利")
+						},310)
+						chessboard.onclick='';
+						back1.onclick='';
+						return;
+					}
+				}
+			}
+		}
+		
+		o=!o;
+	}
+	</script>
+</body>
+</html>
