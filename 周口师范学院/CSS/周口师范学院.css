@@ -170,6 +170,9 @@
 	margin-right: 5px;
 	border: 1px white solid;
 }
+#main-image1_bottom2_ul .focusDiv{
+	border: 1px #F2C43B solid;
+}
 #bottom{
 	height: 371px;
 	width: 100%;
@@ -372,4 +375,20 @@
 }
 #bottom_best1_two a:hover{
 	text-decoration: none;
+}
+#move{
+	width: 270px;
+	height: 100px;
+	position: absolute;
+	z-index: 5;
+	cursor: pointer;
+}
+
+#move div{
+	width: 15px;
+	height: 15px;
+	line-height: 15px;
+	text-align: center;
+	background-color: white;
+	margin-left: 255px;
 }
