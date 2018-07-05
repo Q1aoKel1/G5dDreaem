@@ -1,9 +1,6 @@
 window.onload=function(){
-	input();
 	weibo();
 	banner();
-
-
 
 	function weibo(){
 		var ul=document.getElementById("ul2");
@@ -25,12 +22,13 @@ window.onload=function(){
 		var ul=document.getElementById("main-image1_ul1");
 		var ul2=document.getElementById('main-image1_bottom2_ul');
 		var a2=ul2.getElementsByTagName('a');
+		var img=document.getElementById('main-image1_ul1').children;
 		var a=-50,
 			timer1,
 			timer2,
 			timer3,
 			num=0;
-		setTimeout(changeImg,3000);
+		changeImg();
 
 		function changeImg(){
 			a=-50;
@@ -38,16 +36,17 @@ window.onload=function(){
 			if (parseInt(ul.style.left)==(-5000)) {
 				ul.style.left=0+'px';
 			}
-			for(var i=0;i<a2.length;i++){
-				a2[i].style="";
-			}
+			
 			if (parseInt(ul.style.left)%1000==0) {
 				num++;
 			}
 			if (num==5) {
 				num=0;
 			}
-			a2[num].style="border: 1px #F2C43B solid;"
+			for (var i = 0; i < a2.length; i++) {
+				a2[i].className=''
+			}
+			a2[num].className="focusDiv"
 			timer1=setInterval(time,20);
 
 			
@@ -68,26 +67,71 @@ window.onload=function(){
 			clearInterval(timer3)
 		}
 
-
-
 		left.onclick=function(){
 			clear();
 			if(parseInt(ul.style.left)==0){
 				ul.style.left=(-5000)+'px';
 			}
 			a=50;
-			for(var i=0;i<a2.length;i++){
-				a2[i].style="";
-			}
 			if (parseInt(ul.style.left)%1000==0) {
 				num--;
 			}
 			if (num==(-1)) {
 				num=4;
 			}
-			a2[num].style="border: 1px #F2C43B solid;"
+			for (var i = 0; i < a2.length; i++) {
+				a2[i].className=''
+			}
+			a2[num].className="focusDiv"
 			timer3=setInterval(time,20)
 		}
 		right.onclick=changeImg;
+
+		for (var i = 0; i < img.length; i++) {
+			img[i].onmouseover=function(){
+				while (parseInt(ul.style.left)%1000==0){
+					clear()
+				}
+			};
+			img[i].onmouseout=changeImg;
+			
+		}
 	}
+
+	function move(){
+		var move =document.getElementById("move");
+		var close = move.getElementsByTagName('div')[0];
+		var time,
+			x=5,
+			y=5;
+		var clientWidth=document.body.clientWidth;
+		var clientHeight=document.body.clientHeight;
+		function moveDiv(){
+			move.style.left=parseInt(move.style.left)+x+"px";
+			move.style.top=parseInt(move.style.top)+y+"px";				
+			if (parseInt(move.style.left)>=(clientWidth-270)) {
+				x=-5;
+			}
+			if (parseInt(move.style.left)==0){
+				x=5;
+			}
+			if (parseInt(move.style.top)>=(clientHeight-100)){
+				y=-5;
+			}
+			if (parseInt(move.style.top)==0){
+				y=5;
+			}
+		}
+		time=setInterval(moveDiv,100)
+		move.onmouseover=function(){
+			clearInterval(time);
+		}
+		move.onmouseout=function(){
+			time=setInterval(moveDiv,100)
+		}
+		close.onclick=function(){
+			move.remove();
+		}
+	}
+	move()
 }
