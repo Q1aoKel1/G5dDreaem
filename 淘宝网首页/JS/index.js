@@ -41,16 +41,7 @@ $('.find_finds_ul li').click(function(){
 	}
 })
 
-$(".find_text>input").keydown(function(){
-	if ($(".find_text>span").text("淘,我喜欢!")) {
-		$(".find_text>span").text("")
-	}
-})
-$(".find_text>input").blur(function(){
-	if (this.value==='') {
-		$(".find_text>span").text("淘,我喜欢!")
-	}
-})
+
 
 $("#erweima>a:eq(0)").click(function(){
 	$('#erweima').css("display","none")
@@ -199,3 +190,17 @@ $(".btn_left2").click(function(){
 })
 $(".btn_right2").click(bengin2)
 bengin2()
+
+var num=1;
+$(window).scroll(function(){
+	if( $(window).scrollTop() >=447){
+		$(".toTOP").css({"position":"fixed","left":"1280px","top":"75px"})
+	}else{
+		$(".toTOP").css({"position":"absolute","left":"300px","top":"290px"})
+	}
+	if ($(window).scrollTop() >=148) {
+		$(".fixedTop").css("display","block")
+	}else{
+		$(".fixedTop").css("display","none");
+	}
+})
