@@ -24,7 +24,7 @@
 
 	//重新启动按钮
 	function reload(){
-		window.location.reload();
+		location.reload();
 	}
 	var btn1=document.getElementById('reload1');
 	btn1.onclick=reload;
@@ -121,6 +121,7 @@
 			setTimeout(function(){
 				context.fillStyle="white";
 				context.fill();
+				o=!o;
 			},300)
 		}
 	}
@@ -204,7 +205,7 @@
 	//玩家下棋
 	var o=true;
 	function play(ev){
-		var ev=ev||event;
+		var ev=ev||event;											//为了兼容火狐浏览器使用event事件
 		var x=ev.offsetX;                                           //相对于当前发生事件源的X坐标
 		var y=ev.offsetY;                                           //相对于当前发生事件源的Y坐标
 		var m=Math.floor(x/30);
@@ -334,8 +335,6 @@
 				}
 			}
 		}
-		
-		o=!o;
 	}
 	</script>
 </body>
