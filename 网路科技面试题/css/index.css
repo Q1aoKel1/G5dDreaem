@@ -1,0 +1,30 @@
+.main{display: flex;}
+#left{width: 200px;background-color: #314150;height: 1970px;}
+.user{width: 200px;height: 200px;text-align: center;background-color: #273341;}
+.user-img{width: 70px;height: 70px;background-color: white;border-radius: 50%;margin-top: 40px;}
+.user-name{font-size: 16px;color: white;margin: 8px 0;}
+.user-num{color: white;width: 50px;height: 20px;line-height: 20px;background-color: #1ab394;border-radius: 10px;display: inline-block;}
+.menu{width: 200px;height: 300px;background-color: #273341;}
+.menu li{width:135px;height: 35px;line-height: 35px;padding-left:65px;color: white;cursor: pointer;font-size: 14px;}
+.menu .guanggao-guanli{width:200px;height:105px;background-color: #283a46;padding: 0;}
+.menu .user-guanli{width:200px;height:70px;background-color: #283a46;padding: 0;}
+.shouye{background: url(../img/shouye.PNG) no-repeat #314150 30px -2px;}
+.guanggao{background: url(../img/guanggao.PNG) no-repeat 30px ;}
+.user-me{background: url(../img/user.png) no-repeat 30px;}
+.shenhe{display:inline-block;width:50px;height: 14px;color: white;background-color: #15a3fd;line-height: 14px;text-align: center;border-radius:7px;font-size: 12px;margin-left:16px;}
+
+#right{width: 100%;height: 1970px;background-color: #f0f3fb;position: relative;font-size: 16px;flex-grow: 1;}
+.top{width: 100%;height: 70px;line-height: 70px;margin-bottom: 4px;background-color: white;}
+.nav{float: left;margin-left: 40px;}
+.quite{float: right;margin-right: 40px;}
+.quite img{width: 40px;height: 30px;}
+.tittle{background-color: white;width: 100%;height: 40px;line-height: 40px;}
+.tittle img{margin-left: 40px;}
+.tittle-div{margin-left:500px;display: inline-block;height: 40px;width: 65px;}
+.table{margin: 0 auto;width: 800px;}
+.xuanze{height: 40px;line-height: 40px;}
+.xuanze button{width: 70px;height: 30px;color: white;border-radius: 15px;border:0;margin-left: 20px;}
+.text{height:80px; padding: 30px;border-top: 2px solid #1ab394;}
+.text-tittle{height: 20px;line-height: 20px;background-color: #f4f3f3; }
+.text-tittle tr{width: 800px;height: 30px;}
+.text-tittle td{width: 200px;text-align: center;}
