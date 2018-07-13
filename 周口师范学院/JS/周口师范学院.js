@@ -65,6 +65,7 @@ window.onload=function(){
 			clearInterval(timer1)
 			clearTimeout(timer2)
 			clearInterval(timer3)
+			clearTimeout(timer4)
 		}
 
 		left.onclick=function(){
@@ -86,14 +87,17 @@ window.onload=function(){
 			timer3=setInterval(time,20)
 		}
 		right.onclick=changeImg;
-
+		var timer4;
 		for (var i = 0; i < img.length; i++) {
 			img[i].onmouseover=function(){
-				while (parseInt(ul.style.left)%1000==0){
-					clear()
-				}
+				ul.style.left=Math.floor(parseInt(ul.style.left)/1000)*1000+'px'
+				clear()
 			};
-			img[i].onmouseout=changeImg;
+			img[i].onmouseout=function(){
+
+				timer4 = setTimeout(changeImg,5000)
+			};
+
 			
 		}
 	}
@@ -102,32 +106,33 @@ window.onload=function(){
 		var move =document.getElementById("move");
 		var close = move.getElementsByTagName('div')[0];
 		var time,
-			x=5,
-			y=5;
+			x=1,
+			y=1;
 		var clientWidth=document.body.clientWidth;
 		var clientHeight=document.body.clientHeight;
 		function moveDiv(){
 			move.style.left=parseInt(move.style.left)+x+"px";
 			move.style.top=parseInt(move.style.top)+y+"px";				
 			if (parseInt(move.style.left)>=(clientWidth-270)) {
-				x=-5;
+				x=-1;
 			}
 			if (parseInt(move.style.left)==0){
-				x=5;
+				x=1;
 			}
 			if (parseInt(move.style.top)>=(clientHeight-100)){
-				y=-5;
+				y=-1;
 			}
 			if (parseInt(move.style.top)==0){
-				y=5;
+				y=1;
 			}
 		}
-		time=setInterval(moveDiv,100)
+
+		time=setInterval(moveDiv,10)
 		move.onmouseover=function(){
 			clearInterval(time);
 		}
 		move.onmouseout=function(){
-			time=setInterval(moveDiv,100)
+			time=setInterval(moveDiv,10)
 		}
 		close.onclick=function(){
 			move.remove();
