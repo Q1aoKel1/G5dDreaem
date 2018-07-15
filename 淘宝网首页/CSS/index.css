@@ -128,10 +128,10 @@ body{overflow-x: hidden;background-color: #f5f5f5}
 .more{width: 290px;height: 233px;margin-top: 1px;position: relative;}
 .more span{width: 24px;height: 24px;display:inline-block;background: url(../img/splice.png) no-repeat ;position: absolute;left: 22px;top: 20px;}
 .more li{position:relative;float: left;width: 71px;height: 76px;text-align: center;line-height: 120px;background-color: white;border:0.5px solid #f5f5f5;}
-.more .xuanding:hover{border:0.5px solid #f40;border-bottom: 0.5px solid white;z-index: 2;}
+.more .xuandingHover{border:0.5px solid #f40;border-bottom: 0.5px solid white;z-index: 2;}
 .more li a{display: inline-block;width: 72px;height: 77px;}
 .more li a:hover{color: #f40;}
-.more .huafei, .lvxing, .chexian{width: 258px;height: 152px;position: absolute;top: 76px;z-index: 1;background-color: #ffffff;padding: 0 15px;border:1px solid #f40;}
+.more .huafei, .lvxing, .chexian{display:none;width: 258px;height: 152px;position: absolute;top: 76px;z-index: 1;background-color: #ffffff;padding: 0 15px;border:1px solid #f40;}
 .more .xuanze{width: 278px;height: 26px;line-height: 26px;margin: 4px 0;}
 .xuanze a{padding: 3px 10px;color: #666666;}
 .more .xuanze a:hover{color:#f40;}
