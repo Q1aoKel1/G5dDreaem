@@ -204,3 +204,12 @@ $(window).scroll(function(){
 		$(".fixedTop").css("display","none");
 	}
 })
+
+$(".close").click(function(){
+	$(".huafei").hide();
+	$("#chonghuafei").removeClass();
+})
+$("#chonghuafei").mouseover(function(){
+	$(".huafei").show();
+	$(this).addClass("xuandingHover")
+})
